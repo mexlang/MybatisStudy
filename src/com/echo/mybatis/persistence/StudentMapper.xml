@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.echo.mybatis.persistence.StudentMapper">  
+  
+  <!-- type – 注入到字段或 JavaBean 属性的普通结果    id为此resultMap的标识 -->
+	<resultMap type="student" id="StudentMapper" >
+		<id property="id" column="id" />
+		<result property="name" column="s_name" />
+		<result property="age" column="s_age" />
+		<result property="sex" column="s_sex" />
+		<result property="birthday" column="s_birthday" />
+	</resultMap>  
+    <!--  根据id -->  
+    <select id="getStudent" parameterType="Integer"  resultMap="StudentMapper">  
+            SELECT * from echo_student   where id=#{id}
+    </select>  
+    <!-- 查询 列表 -->  
+    <select id="getStudentAll"  resultMap="StudentMapper">  
+            SELECT * from echo_student  
+    </select>  
+    <insert  id="addStudent" parameterType="student">
+    insert into echo_student(s_name,s_sex,s_age,s_birthday)values(#{name},#{sex},#{age},#{birthday})
+    </insert>
+    
+     <insert  id="addStudentTrim" parameterType="student">
+    insert into echo_student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="name!=null">s_name,</if>
+      <if test="sex!=null">s_sex,</if>
+    <if test="age!=null">s_age,</if>
+    <if test="birthday!=null">s_birthday,</if>
+    </trim>
+    values
+   <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="name!=null">#{name},</if>
+      <if test="sex!=null">#{sex},</if>
+    <if test="age!=null">#{age},</if>
+    <if test="birthday!=null">#{birthday},</if>
+    </trim>
+    </insert>
+    
+    
+    
+    <update  id="updateStudent" parameterType="student">
+     update echo_student set s_name=#{name},s_sex=#{sex},s_age=#{age} where id=#{id}
+    </update>
+    
+     <update  id="updateStudentTrim" parameterType="student">
+     update echo_student set
+	<trim suffixOverrides=",">
+	<if test="name!=null and name!=''">s_name=#{name},</if>
+	<if test="sex!=null and sex!=''"> s_sex=#{sex}, </if>
+	<if test="age!=null ">s_age=#{age}, </if>
+	 <if test="birthday!=null">s_birthday=#{birthday},</if>
+	</trim>
+       where id=#{id}
+    </update>
+      
+      
+       <select id="selectStudentbyId" parameterType="list" resultMap="StudentMapper">
+   select * from  echo_student   where id IN 
+   <foreach collection="list"   item="item" open="(" separator=","   close=")">
+     #{item}
+   </foreach></select>
+</mapper>  

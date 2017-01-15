@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.echo.mybatis.persistence.LockMapper">  
+  
+  <!-- type – 注入到字段或 JavaBean 属性的普通结果    id为此resultMap的标识 -->
+    <resultMap type="lock" id="LockMapper"  >  
+    <id property="id" column="id"/>
+     <result property="lockName" column="lock_name"/>
+     <result column="key_id"    property="keyId"/>  
+     <!--   一对一 解释：  数据库字段     javaBean对应的字段       返回的类型     查询另外mapper方法全路径 -->
+     <association  column="key_id" property="key" javaType="Key" select="com.echo.mybatis.persistence.KeyMapper.getKey"></association>
+     
+     <!--  <collection property="" column="" javaType="ArrayList" ofType="Key" select="" ></collection> -->
+    </resultMap>  
+       
+    <!-- 查询学生，根据id -->  
+    <select id="getLock" parameterType="Integer"  resultMap="LockMapper">  
+            SELECT * from echo_lock    where id=#{id}
+    </select>  
+    <!-- 查询学生列表 -->  
+    <select id="getLockAll"  resultMap="LockMapper">  
+            SELECT * from echo_lock   ST
+    </select>  
+</mapper>  
