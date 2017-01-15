@@ -232,7 +232,7 @@ public   void selectLockById() {
  	      SqlSession sqlSession = getSqlSessionFactory().openSession();
  	     StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
  	       try {
- 	    	   List<Integer> listStu=new ArrayList<>();
+ 	    	   List<Integer> listStu=new ArrayList<Integer>();
  	    	  listStu.add(2);  listStu.add(5);listStu.add(7);
  	    	       List<Student>   	listS= studentMapper.selectStudentbyId(listStu) ;
  	    	      for (Student student : listS) {
